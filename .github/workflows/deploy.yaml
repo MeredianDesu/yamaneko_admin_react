@@ -11,7 +11,7 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up SSH
       uses: webfactory/ssh-agent@v0.5.3
@@ -29,7 +29,10 @@ jobs:
     - name: Build react project
       run: npm run build  
 
+    - name: Check build directory
+      run: ls -la /home/runner/work/yamaneko_admin_react/yamaneko_admin_react/build
+
       #Send to server
     - name: Deploy to server
       run: |
-        scp -r ./build/* ${{ secrets.SERVER_NAME }}@${{ secrets.SERVER_PORT }}:${{ secrets.DEPLOY_PATH }} 
+        scp -r /home/runner/work/yamaneko_admin_react/yamaneko_admin_react/build/* ${{ secrets.SERVER_NAME }}@${{ secrets.SERVER_PORT }}:${{ secrets.DEPLOY_PATH }} 

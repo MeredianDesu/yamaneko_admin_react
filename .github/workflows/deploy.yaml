@@ -13,17 +13,25 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Set up SSH
-      uses: webfactory/ssh-agent@v0.5.3
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }} 
-      
+    - name: Setup SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+        chmod 600 ~/.ssh/id_ed25519
+        eval $(ssh-agent -s)
+        ssh-add ~/.ssh/id_ed25519
+
+      # Add server to known_hosts
+    - name: Add server to known_hosts
+      run: |
+        ssh-keyscan -H ${{ secrets.SERVER_PORT }} >> ~/.ssh/known_hosts
+        chmod 644 ~/.ssh/known_hosts  # Убедитесь, что файл имеет правильные разрешения
+
     - name: Add SSH key
       uses: webfactory/ssh-agent@v0.5.3
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       
-
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:

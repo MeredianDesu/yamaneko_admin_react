@@ -37,7 +37,7 @@
     "@typescript-eslint/parser": "7.4.0",
     "@vitejs/plugin-react": "^4.0.0",
     "create-stylelint": "^0.3.0",
-    "eslint": "8.57.0",
+    "eslint": "^7.2.0",
     "eslint-config-airbnb": "18.2.1",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-config-prettier": "9.1.0",

@@ -30,7 +30,7 @@ jobs:
       run: npm run build  
 
     - name: Check build directory
-      run: ls -la ./build
+      run: ls -la ./dist
 
       #Send to server
     - name: Deploy to server

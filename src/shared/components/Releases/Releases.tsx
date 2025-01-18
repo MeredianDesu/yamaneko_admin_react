@@ -101,8 +101,8 @@ export const Releases = () => {
                   <tr key={row.id}>
                     <td>{row.id}</td>
                     <td>{`${row.translatedName} ( ${row.originalName} )`}</td>
-                    <td>{row.status ?? 'unknown'}</td>
-                    <td>{row.updated ?? 'unknown'}</td>
+                    <td>{row.status ?? 'no data'}</td>
+                    <td>{row.updated ?? 'no data'}</td>
                   </tr>
                 ))}
               </tbody>

@@ -1,0 +1,111 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  font-size: 14px;
+  font-family: 'Source Code Pro';
+
+  background: url('../../shared/assets/icons/loginBG.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+
+  overflow: hidden;
+
+  h2 {
+    margin: 0;
+    padding: 0;
+    font-size: 2rem;
+  }
+
+  @media (max-width: 550px) {
+    background-size: cover;
+    background-position: center;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+  }
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login_form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 580px;
+  height: auto;
+  padding: 20px;
+
+  @media (max-width: 480px) {
+    width: 90%;
+    height: auto;
+  }
+}
+
+.input {
+  display: flex;
+  align-items: center;
+
+  padding: 10px;
+
+  width: 100%;
+
+  input {
+    all: unset;
+    width: 100%;
+    height: 30px;
+    margin-left: 10px;
+    border-bottom: 2px solid #850208;
+
+    @media (max-width: 480px) {
+      height: 40px;
+
+      width: 100%;
+      margin-left: 0;
+    }
+  }
+
+  img {
+    width: 20px;
+    height: 20px;
+
+    @media (max-width: 480px) {
+      display: none;
+    }
+  }
+}
+
+.log_in {
+  all: unset;
+  height: 40px;
+  width: 100%;
+  max-width: 180px;
+
+  text-align: center;
+  background-color: #fd4249;
+  color: #fffbfc;
+
+  font-family: 'Source Code Pro';
+  font-size: 16px;
+  font-weight: bold;
+
+  border-radius: 8px;
+  // box-shadow: 5px 5px 5px #828282;
+
+  cursor: pointer;
+  margin-top: 20px;
+
+  @media (max-width: 480px) {
+    width: 100%;
+    max-width: none;
+  }
+}

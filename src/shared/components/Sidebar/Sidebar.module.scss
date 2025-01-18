@@ -1,0 +1,41 @@
+.sidebar {
+  font-family: 'Source Sans 3';
+
+  background-color: #2f2f2f;
+  width: 250px;
+  height: calc(100% - 60px); /* Учитываем высоту заголовка */
+  position: fixed;
+  top: 60px;
+  left: 0;
+  // padding-top: 20px;
+
+  border-right: solid;
+  border-color: #3a3a3a;
+
+  display: flex;
+  flex-direction: column;
+
+  span {
+    margin-left: 15px;
+  }
+
+  nav ul {
+    list-style: none;
+  }
+
+  a {
+    margin-bottom: 15px;
+
+    color: white;
+
+    text-decoration: none;
+    font-size: 21px;
+
+    display: flex;
+    align-items: center;
+  }
+
+  a:hover {
+    color: #cd3737;
+  }
+}

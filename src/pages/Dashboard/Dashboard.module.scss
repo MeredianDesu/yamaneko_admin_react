@@ -1,0 +1,35 @@
+/* Убираем отступы */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* Важно для адаптивности */
+}
+
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+header {
+  height: 60px;
+  flex-shrink: 0;
+}
+
+.dashboard-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 250px;
+  flex-shrink: 0;
+}
+
+.releases {
+  background: #f5f5f5;
+  flex: 1;
+  overflow-y: auto;
+}

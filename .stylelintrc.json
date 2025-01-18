@@ -1,0 +1,9 @@
+{
+  "extends": ["stylelint-config-standard-scss", "stylelint-config-rational-order"],
+  "rules": {
+    "selector-class-pattern": null,
+    "scss/percent-placeholder-pattern": null
+  },
+  "files": ["**/*.scss"],
+  "ignoreFiles": ["**/*.ts", "**/*.tsx", ".**/*.cjs", "**/*.html", "**/*.md"]
+}

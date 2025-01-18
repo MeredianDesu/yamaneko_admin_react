@@ -1,0 +1,50 @@
+.header {
+  font-family: 'Source Sans 3';
+  font-weight: regular;
+
+  background-color: #0e0e0e;
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 60px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+a {
+  all: unset;
+
+  font-size: 32px;
+  font-weight: regular;
+}
+
+.log_out {
+  all: unset;
+
+  cursor: pointer;
+
+  background-color: #fd4249;
+  border-radius: 12px;
+
+  width: 100%;
+  max-width: 80px;
+
+  text-align: center;
+
+  padding: 5px;
+
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.log_out:hover {
+  color: #0e0e0e;
+}

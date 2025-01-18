@@ -35,4 +35,4 @@ jobs:
       #Send to server
     - name: Deploy to server
       run: |
-        scp -r ./build/* ${{ secrets.SERVER_NAME }}@${{ secrets.SERVER_PORT }}:${{ secrets.DEPLOY_PATH }} 
+        scp -r ./dist/* ${{ secrets.SERVER_NAME }}@${{ secrets.SERVER_PORT }}:${{ secrets.DEPLOY_PATH }} 

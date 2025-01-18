@@ -26,9 +26,10 @@ jobs:
     - name: Install dependencies
       run: npm install  
 
-    - name: Build project
+    - name: Build react project
       run: npm run build  
 
+      #Send to server
     - name: Deploy to server
       run: |
         scp -r ./build/* ${{ secrets.SERVER_NAME }}@${{ secrets.SERVER_PORT }}:${{ secrets.DEPLOY_PATH }} 

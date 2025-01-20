@@ -13,7 +13,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ isAuthenticated, childr
     return <Navigate to="/" />
   }
 
-  return <>{children}</>
+  return children
 }
 
 export default ProtectedRoute

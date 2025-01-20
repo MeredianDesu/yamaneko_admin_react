@@ -1,6 +1,7 @@
-/* eslint-disable no-console */
 import axios, { type AxiosError, type AxiosInstance } from 'axios'
 import { getAuthToken } from 'features/Auth/getAuthToken'
+import { Slide, toast } from 'react-toastify'
+import { systemMessages } from 'shared/constants/systemMessages'
 
 import { BASE_URL } from './routes'
 
@@ -21,7 +22,18 @@ httpApi.interceptors.response.use(
     return response
   },
   (error: AxiosError) => {
-    console.log(`Fetch error${error}`)
+    toast.error(systemMessages.BAD_CREDENTIALS, {
+      position: 'top-center',
+      autoClose: 3000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'dark',
+      transition: Slide,
+    })
+
     // eslint-disable-next-line compat/compat
     return Promise.reject(error)
   },

@@ -1,9 +1,8 @@
-/* eslint-disable no-console */
-
 import { httpApi } from 'api/httpApi'
 import { RELEASES } from 'api/routes'
 import { useAuth } from 'features/Auth/useAuth'
 import { useEffect, useState } from 'react'
+import { systemMessages } from 'shared/constants/systemMessages'
 import { type ReleaseType } from 'shared/types/ReleaseType'
 
 import styles from './Releases.module.scss'
@@ -28,7 +27,7 @@ export const Releases = () => {
         setIsLoading(false)
       })
       .catch((error) => {
-        setError(`Error while fetching releases: ${error.message}`)
+        setError(`${systemMessages.FETCH_ERROR} : ${error.message}. Try to reload page.`)
         setIsLoading(false)
       })
   }, [isAuthenticated, accessToken])

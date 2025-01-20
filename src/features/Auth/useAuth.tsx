@@ -1,5 +1,8 @@
-import { createContext, type ReactNode, useContext, useEffect, useState } from 'react'
+import { createContext, type ReactNode, useContext, useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Slide, toast } from 'react-toastify'
+import { systemMessages } from 'shared/constants/systemMessages'
+import { getRoles } from 'shared/helpers/parseRoles'
 
 type AuthContextType = {
   isAuthenticated: boolean
@@ -29,16 +32,33 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const token = localStorage.getItem('accessToken')
     if (token) {
-      setIsAuthenticated(true)
-      setAccessToken(token)
+      const roles = getRoles(token)
+      if (roles.includes('ADMIN')) {
+        setIsAuthenticated(true)
+        setAccessToken(token)
+      } else {
+        toast.error(systemMessages.FORBIDDEN, {
+          position: 'top-center',
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'dark',
+          transition: Slide,
+        })
+        logout()
+      }
     }
   })
 
-  return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, accessToken }}>
-      {children}
-    </AuthContext.Provider>
+  const contextValue = useMemo(
+    () => ({ isAuthenticated, login, logout, accessToken }),
+    [isAuthenticated, accessToken],
   )
+
+  return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
 }
 
 export const useAuth = () => {

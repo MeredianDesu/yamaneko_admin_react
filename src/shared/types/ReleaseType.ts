@@ -13,4 +13,8 @@ export type ReleaseType = {
   dubbers: DubbersType[]
   genres: GenresType[]
   uploadedAt: string
+
+  // Временные переменные, в них должны приходить ответы с сервера
+  status?: string
+  updated?: string
 }

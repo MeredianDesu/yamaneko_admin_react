@@ -1,6 +1,7 @@
 import { useAuth } from 'features/Auth/useAuth'
 import { Dashboard } from 'pages/Dashboard/Dashboard'
 import { Route, Routes } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
 import ProtectedRoute from 'shared/components/ProtectedRoute/ProtectedRoute'
 import { Login } from 'widgets/Login/Login'
 
@@ -20,6 +21,7 @@ const App = () => {
           }
         />
       </Routes>
+      <ToastContainer />
     </>
   )
 }

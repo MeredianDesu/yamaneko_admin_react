@@ -1,8 +1,8 @@
 import { type DubbersType } from './DubbersType'
 import { type GenresType } from './GenresTypes'
 
-export type ReleaseType = {
-  id: number
+export interface ReleaseType {
+  id: string | number
   originalName: string
   translatedName: string
   posterImageUrl: string

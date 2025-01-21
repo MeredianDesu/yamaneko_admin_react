@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { systemMessages } from 'shared/constants/systemMessages'
 import { type ReleaseType } from 'shared/types/ReleaseType'
 
+import { Table } from '../Table/Table'
 import styles from './Releases.module.scss'
 
 export const Releases = () => {
@@ -15,7 +16,7 @@ export const Releases = () => {
 
   useEffect(() => {
     if (!isAuthenticated || !accessToken) {
-      setError('User is not authenticated or token is missing.')
+      setError(`${systemMessages.FORBIDDEN_USER} or ${systemMessages.NO_TOKEN}.`)
       setIsLoading(false)
       return
     }
@@ -85,28 +86,11 @@ export const Releases = () => {
               + Add release
             </button>
           </div>
-          <div className={styles.table_container}>
-            <table>
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Status</th>
-                  <th>Updated</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.map((row) => (
-                  <tr key={row.id}>
-                    <td>{row.id}</td>
-                    <td>{`${row.translatedName} ( ${row.originalName} )`}</td>
-                    <td>{row.status ?? 'no data'}</td>
-                    <td>{row.updated ?? 'no data'}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <Table
+            className={styles.table_container}
+            data={data}
+            displayedValues={['id', 'translatedName', 'originalName', 'status', 'updated']}
+          />
         </div>
       </div>
     </div>

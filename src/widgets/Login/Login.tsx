@@ -5,7 +5,10 @@ import { useAuth } from 'features/Auth/useAuth'
 import { getFormValues } from 'features/Login/sendForm'
 import { type SyntheticEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
+import emailImg from 'shared/assets/icons/email.svg'
+import passwordImg from 'shared/assets/icons/password.svg'
 import { Input } from 'shared/components/Input/Input'
+import { contentText } from 'shared/constants/contentText'
 
 import styles from './LogIn.module.scss'
 
@@ -52,20 +55,20 @@ export const Login = () => {
           className={styles.input}
           name="email"
           type="email"
-          placeholder="example@email.com"
+          placeholder={contentText.emailPlaceholder}
           autoComplete="off"
-          src="src/shared/assets/icons/email.svg"
+          src={emailImg}
         />
         <Input
           className={styles.input}
           name="password"
           type="password"
-          placeholder="password"
+          placeholder={contentText.passwordPlaceholder}
           autoComplete="off"
-          src="src/shared/assets/icons/password.svg"
+          src={passwordImg}
         />
         <button className={styles.log_in} type="submit">
-          Log In
+          {contentText.login}
         </button>
       </form>
     </div>

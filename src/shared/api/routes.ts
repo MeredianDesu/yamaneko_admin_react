@@ -10,3 +10,6 @@ export const REGISTER = `/auth${API_VER}/register`
 export const REFRESH = `/auth${API_VER}/refresh`
 
 export const RELEASES = `/releases${API_VER}`
+export const CHARACTERS = `/characters${API_VER}`
+export const TEAM = `/team${API_VER}`
+export const GENRES = `/genres${API_VER}`

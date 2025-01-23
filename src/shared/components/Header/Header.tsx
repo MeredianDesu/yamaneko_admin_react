@@ -24,7 +24,7 @@ export const Header = () => {
 
   return (
     <header className={styles.header}>
-      <a href="/" className={styles.logo}>
+      <a href="/dashboard" className={styles.logo}>
         YAMANEKO
       </a>
       <button className={styles.log_out} type="button" onClick={handleClick}>

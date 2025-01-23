@@ -1,3 +1,9 @@
+import { Link } from 'react-router-dom'
+import charactersImg from 'shared/assets/sidebarIcons/character.png'
+import dubbersImg from 'shared/assets/sidebarIcons/dubber.png'
+import genresImg from 'shared/assets/sidebarIcons/genres.png'
+import releasesImg from 'shared/assets/sidebarIcons/releases.png'
+
 import style from './Sidebar.module.scss'
 
 export const Sidebar = () => {
@@ -6,28 +12,28 @@ export const Sidebar = () => {
       <nav>
         <ul>
           <li>
-            <a href="/">
-              <img src="/src/shared/assets/sidebarIcons/releases.png" alt="" />
+            <Link to="/dashboard/releases">
+              <img src={releasesImg} alt="" />
               <span>Releases</span>
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/">
-              <img src="/src/shared/assets/sidebarIcons/character.png" alt="" />
+            <Link to="/dashboard/characters">
+              <img src={charactersImg} alt="" />
               <span>Characters</span>
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/">
-              <img src="/src/shared/assets/sidebarIcons/dubber.png" alt="" />
-              <span>Dubbers</span>
-            </a>
+            <Link to="/dashboard/team">
+              <img src={dubbersImg} alt="" />
+              <span>Team</span>
+            </Link>
           </li>
           <li>
-            <a href="/">
-              <img src="/src/shared/assets/sidebarIcons/genres.png" alt="" />
+            <Link to="/dashboard/genres">
+              <img src={genresImg} alt="" />
               <span>Genres</span>
-            </a>
+            </Link>
           </li>
         </ul>
       </nav>

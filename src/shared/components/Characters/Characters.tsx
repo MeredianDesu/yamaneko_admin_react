@@ -1,19 +1,20 @@
 import { httpApi } from 'api/httpApi'
-import { RELEASES } from 'api/routes'
+import { CHARACTERS } from 'api/routes'
 import { useAuth } from 'features/Auth/useAuth'
 import { useEffect, useState } from 'react'
 import { contentText } from 'shared/constants/contentText'
 import { systemMessages } from 'shared/constants/systemMessages'
-import { type ReleaseType } from 'shared/types/ReleaseType'
+import { type CharactersType } from 'shared/types/CharacterTypes'
 
 import { Table } from '../Table/Table'
-import styles from './Releases.module.scss'
+import styles from './Characters.module.scss'
 
-export const Releases = () => {
+export const Characters = () => {
   const { isAuthenticated, accessToken } = useAuth()
-  const [data, setData] = useState<ReleaseType[]>([])
+  const [data, setData] = useState<CharactersType[]>([])
   const [savedError, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
+  const { characterHeader, characterDesc, addCharacter, charactersTableName } = contentText
 
   useEffect(() => {
     if (!isAuthenticated || !accessToken) {
@@ -23,7 +24,7 @@ export const Releases = () => {
     }
 
     httpApi
-      .get(RELEASES)
+      .get(CHARACTERS)
       .then((response) => {
         setData(response.data)
         setIsLoading(false)
@@ -39,12 +40,12 @@ export const Releases = () => {
       <div className={styles.container}>
         <div className={styles.content}>
           <div className={styles.head}>
-            <span className={styles.page_name}>{contentText.releaseHeader}</span>
-            <span className={styles.page_subject}>{contentText.releasesDesc}</span>
+            <span className={styles.page_name}>{characterHeader}</span>
+            <span className={styles.page_subject}>M{characterDesc}</span>
           </div>
-          <div className={styles.releases_data}>
+          <div className={styles.data}>
             <div className={styles.head_bar}>
-              <span>Loading releases...</span>
+              <span>Loading characters...</span>
             </div>
           </div>
         </div>
@@ -57,10 +58,10 @@ export const Releases = () => {
       <div className={styles.container}>
         <div className={styles.content}>
           <div className={styles.head}>
-            <span className={styles.page_name}>{contentText.releaseHeader}</span>
-            <span className={styles.page_subject}>{contentText.releasesDesc}</span>
+            <span className={styles.page_name}>{characterHeader}</span>
+            <span className={styles.page_subject}>{characterDesc}</span>
           </div>
-          <div className={styles.releases_data}>
+          <div className={styles.data}>
             <div className={styles.head_bar}>
               <span>{savedError}</span>
             </div>
@@ -74,24 +75,24 @@ export const Releases = () => {
     <div className={styles.container}>
       <div className={styles.content}>
         <div className={styles.head}>
-          <span className={styles.page_name}>{contentText.releaseHeader}</span>
-          <span className={styles.page_subject}>{contentText.releasesDesc}</span>
+          <span className={styles.page_name}>{characterHeader}</span>
+          <span className={styles.page_subject}>{characterDesc}</span>
         </div>
 
-        <div className={styles.releases_data}>
+        <div className={styles.data}>
           <div className={styles.head_bar}>
             <span>
-              {contentText.releasesTableName}
-              <span className={styles.releases_count}> {data.length}</span>
+              {charactersTableName}
+              <span className={styles.count}> {data.length}</span>
             </span>
-            <button type="button" className={styles.add_release}>
-              {contentText.addRelease}
+            <button type="button" className={styles.add_entity}>
+              {addCharacter}
             </button>
           </div>
           <Table
             className={styles.table_container}
             data={data}
-            displayedValues={['id', 'translatedName', 'originalName', 'status', 'updated']}
+            displayedValues={['id', 'originalName', 'translatedName']}
           />
         </div>
       </div>

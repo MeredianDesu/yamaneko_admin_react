@@ -10,7 +10,7 @@ interface ProtectedRouteProps {
 // eslint-disable-next-line no-restricted-syntax
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ isAuthenticated, children }) => {
   if (!isAuthenticated) {
-    return <Navigate to="/" />
+    return <Navigate to="/" replace />
   }
 
   return children

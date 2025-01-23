@@ -1,5 +1,5 @@
 import { createContext, type ReactNode, useContext, useEffect, useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { Slide, toast } from 'react-toastify'
 import { systemMessages } from 'shared/constants/systemMessages'
 import { getRoles } from 'shared/helpers/parseRoles'
@@ -69,11 +69,12 @@ export const useAuth = () => {
   }
 
   const navigator = useNavigate()
+  const location = useLocation()
 
   const { isAuthenticated } = context
   useEffect(() => {
     if (isAuthenticated) {
-      navigator('/dashboard')
+      navigator(location.pathname)
     }
   }, [isAuthenticated, navigator])
 

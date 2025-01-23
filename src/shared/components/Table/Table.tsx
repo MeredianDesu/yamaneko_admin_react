@@ -16,15 +16,19 @@ export const Table = ({ className, displayedValues = ['id'], data }: Props) => {
   const displayedReleases = data.map((release) => {
     return Object.keys(headFields).reduce(
       (acc, field) => {
-        if (field in release) {
-          acc[field] = release[field as keyof typeof release]
-        } else {
-          acc[field] = 'unknown'
+        const fieldParts = field.split('.')
+        let value: unknown = release
+
+        // Traverse nested fields
+        for (const part of fieldParts) {
+          value = value?.[part]
+          if (value === undefined) break
         }
 
+        acc[field] = value ?? 'unknown'
         return acc
       },
-      {} as Partial<typeof release>,
+      {} as Record<string, unknown>,
     )
   })
 

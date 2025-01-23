@@ -1,5 +1,5 @@
+import { Outlet } from 'react-router-dom'
 import { Header } from 'shared/components/Header/Header'
-import { Releases } from 'shared/components/Releases/Releases'
 import { Sidebar } from 'shared/components/Sidebar/Sidebar'
 
 export const Dashboard = () => {
@@ -8,7 +8,7 @@ export const Dashboard = () => {
       <Header />
       <div className="dashboard-content">
         <Sidebar />
-        <Releases />
+        <Outlet />
       </div>
     </div>
   )

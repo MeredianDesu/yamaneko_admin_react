@@ -1,3 +1,5 @@
+import { useLocation, useNavigate } from 'react-router-dom'
+
 interface Props {
   className?: string
   displayedValues: string[]
@@ -5,6 +7,9 @@ interface Props {
 }
 
 export const Table = ({ className, displayedValues = ['id'], data }: Props) => {
+  const navigate = useNavigate()
+  const location = useLocation()
+
   const headFields = displayedValues.reduce(
     (acc, value) => {
       acc[value] = value.toString()
@@ -46,7 +51,16 @@ export const Table = ({ className, displayedValues = ['id'], data }: Props) => {
           {displayedReleases.map((row, idx) => {
             return (
               // eslint-disable-next-line react/no-array-index-key
-              <tr key={idx}>
+              <tr
+                key={idx}
+                onClick={() => {
+                  const currentPath = location.pathname.endsWith('/')
+                    ? location.pathname.slice(0, -1)
+                    : location.pathname
+
+                  navigate(`${currentPath}/${row.id}`)
+                }}
+              >
                 {Object.keys(headFields).map((field) => (
                   <td key={field}>{row[field]}</td>
                 ))}

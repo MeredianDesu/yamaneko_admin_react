@@ -1,0 +1,55 @@
+.dubbers_list {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  border-top: 1px solid #c3c3c3;
+
+  .dubbers_list_header {
+    display: flex;
+    flex-direction: column;
+
+    color: white;
+
+    .block_name {
+      font-size: 24px;
+    }
+
+    .block_subject {
+      font-size: 16px;
+
+      color: #c3c3c3;
+    }
+  }
+
+  .dubbers_list_data {
+    display: flex;
+
+    .character_item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      color: white;
+      img {
+        border-radius: 8px;
+
+        width: 150px;
+        height: 200px;
+      }
+    }
+
+    .character_name {
+      font-size: 24px;
+    }
+
+    .dubber_name {
+      font-size: 16px;
+    }
+
+    .character_item:nth-child(2n) {
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+  }
+}

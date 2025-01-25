@@ -1,20 +1,19 @@
 import { httpApi } from 'api/httpApi'
-import { CHARACTERS } from 'api/routes'
+import { RELEASES } from 'api/routes'
 import { useAuth } from 'features/Auth/useAuth'
 import { useEffect, useState } from 'react'
+import { Table } from 'shared/components/Table/Table'
 import { contentText } from 'shared/constants/contentText'
 import { systemMessages } from 'shared/constants/systemMessages'
-import { type CharactersType } from 'shared/types/CharacterTypes'
+import { type ReleaseType } from 'shared/types/ReleaseType'
 
-import { Table } from '../Table/Table'
-import styles from './Characters.module.scss'
+import styles from './Releases.module.scss'
 
-export const Characters = () => {
+export const Releases = () => {
   const { isAuthenticated, accessToken } = useAuth()
-  const [data, setData] = useState<CharactersType[]>([])
+  const [data, setData] = useState<ReleaseType[]>([])
   const [savedError, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const { characterHeader, characterDesc, addCharacter, charactersTableName } = contentText
 
   useEffect(() => {
     if (!isAuthenticated || !accessToken) {
@@ -24,7 +23,7 @@ export const Characters = () => {
     }
 
     httpApi
-      .get(CHARACTERS)
+      .get(RELEASES)
       .then((response) => {
         setData(response.data)
         setIsLoading(false)
@@ -33,19 +32,19 @@ export const Characters = () => {
         setError(`${systemMessages.FETCH_ERROR} : ${error.message}. Try to reload page.`)
         setIsLoading(false)
       })
-  }, [isAuthenticated, accessToken])
+  }, [isLoading])
 
   if (isLoading) {
     return (
       <div className={styles.container}>
         <div className={styles.content}>
           <div className={styles.head}>
-            <span className={styles.page_name}>{characterHeader}</span>
-            <span className={styles.page_subject}>M{characterDesc}</span>
+            <span className={styles.page_name}>{contentText.releaseHeader}</span>
+            <span className={styles.page_subject}>{contentText.releasesDesc}</span>
           </div>
-          <div className={styles.data}>
+          <div className={styles.releases_data}>
             <div className={styles.head_bar}>
-              <span>Loading characters...</span>
+              <span>Loading releases...</span>
             </div>
           </div>
         </div>
@@ -58,10 +57,10 @@ export const Characters = () => {
       <div className={styles.container}>
         <div className={styles.content}>
           <div className={styles.head}>
-            <span className={styles.page_name}>{characterHeader}</span>
-            <span className={styles.page_subject}>{characterDesc}</span>
+            <span className={styles.page_name}>{contentText.releaseHeader}</span>
+            <span className={styles.page_subject}>{contentText.releasesDesc}</span>
           </div>
-          <div className={styles.data}>
+          <div className={styles.releases_data}>
             <div className={styles.head_bar}>
               <span>{savedError}</span>
             </div>
@@ -75,24 +74,24 @@ export const Characters = () => {
     <div className={styles.container}>
       <div className={styles.content}>
         <div className={styles.head}>
-          <span className={styles.page_name}>{characterHeader}</span>
-          <span className={styles.page_subject}>{characterDesc}</span>
+          <span className={styles.page_name}>{contentText.releaseHeader}</span>
+          <span className={styles.page_subject}>{contentText.releasesDesc}</span>
         </div>
 
-        <div className={styles.data}>
+        <div className={styles.releases_data}>
           <div className={styles.head_bar}>
             <span>
-              {charactersTableName}
-              <span className={styles.count}> {data.length}</span>
+              {contentText.releasesTableName}
+              <span className={styles.releases_count}> {data.length}</span>
             </span>
-            <button type="button" className={styles.add_entity}>
-              {addCharacter}
+            <button type="button" className={styles.add_release}>
+              {contentText.addRelease}
             </button>
           </div>
           <Table
             className={styles.table_container}
             data={data}
-            displayedValues={['id', 'originalName', 'translatedName']}
+            displayedValues={['id', 'translatedName', 'originalName', 'status', 'updated']}
           />
         </div>
       </div>

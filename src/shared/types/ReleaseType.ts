@@ -17,4 +17,5 @@ export interface ReleaseType {
   // Временные переменные, в них должны приходить ответы с сервера
   status?: string
   updated?: string
+  ageRestriction?: string
 }

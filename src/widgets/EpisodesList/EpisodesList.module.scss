@@ -1,0 +1,23 @@
+.episodes_list {
+  display: flex;
+  flex: 1;
+
+  border-top: 1px solid #c3c3c3;
+
+  .episodes_list_header {
+    display: flex;
+    flex-direction: column;
+
+    color: white;
+
+    .block_name {
+      font-size: 24px;
+    }
+
+    .block_subject {
+      font-size: 16px;
+
+      color: #c3c3c3;
+    }
+  }
+}

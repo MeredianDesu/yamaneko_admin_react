@@ -2,12 +2,14 @@ import { useAuth } from 'features/Auth/useAuth'
 import { Dashboard } from 'pages/Dashboard/Dashboard'
 import { Route, Routes } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
-import { Characters } from 'shared/components/Characters/Characters'
-import { Genres } from 'shared/components/Genres/Genres'
 import ProtectedRoute from 'shared/components/ProtectedRoute/ProtectedRoute'
-import { Releases } from 'shared/components/Releases/Releases'
-import { Team } from 'shared/components/Team/Team'
+import { Characters } from 'widgets/Characters/Characters'
+import { DashboardInfo } from 'widgets/DashboardInfo/DashboardInfo'
+import { Genres } from 'widgets/Genres/Genres'
 import { Login } from 'widgets/Login/Login'
+import { Releases } from 'widgets/Releases/Releases'
+import { SelectedRelease } from 'widgets/SelectedRelease/SelectedRelease'
+import { Team } from 'widgets/Team/Team'
 
 const App = () => {
   const { isAuthenticated } = useAuth()
@@ -24,8 +26,9 @@ const App = () => {
             </ProtectedRoute>
           }
         >
-          <Route index element={<Releases />} />
+          <Route index element={<DashboardInfo />} />
           <Route path="releases" element={<Releases />} />
+          <Route path="releases/:id" element={<SelectedRelease />} />
           <Route path="characters" element={<Characters />} />
           <Route path="team" element={<Team />} />
           <Route path="genres" element={<Genres />} />

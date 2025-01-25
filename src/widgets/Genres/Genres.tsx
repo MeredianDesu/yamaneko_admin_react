@@ -2,11 +2,11 @@ import { httpApi } from 'api/httpApi'
 import { GENRES } from 'api/routes'
 import { useAuth } from 'features/Auth/useAuth'
 import { useEffect, useState } from 'react'
+import { Table } from 'shared/components/Table/Table'
 import { contentText } from 'shared/constants/contentText'
 import { systemMessages } from 'shared/constants/systemMessages'
 import { type GenresType } from 'shared/types/GenresTypes'
 
-import { Table } from '../Table/Table'
 import styles from './Genres.module.scss'
 
 export const Genres = () => {

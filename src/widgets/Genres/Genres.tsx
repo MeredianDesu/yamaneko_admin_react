@@ -10,29 +10,34 @@ import { type GenresType } from 'shared/types/GenresTypes'
 import styles from './Genres.module.scss'
 
 export const Genres = () => {
-  const { isAuthenticated, accessToken } = useAuth()
+  const { isAuthenticated, accessToken, isInitialized } = useAuth()
   const [data, setData] = useState<GenresType[]>([])
   const [savedError, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const { genresHeader, genresDesc, addGenre, genreTableName } = contentText
 
   useEffect(() => {
+    if (!isInitialized) return
     if (!isAuthenticated || !accessToken) {
       setError(`${systemMessages.FORBIDDEN_USER} or ${systemMessages.NO_TOKEN}.`)
       setIsLoading(false)
       return
     }
 
-    httpApi
-      .get(GENRES)
-      .then((response) => {
-        setData(response.data)
-        setIsLoading(false)
-      })
-      .catch((error) => {
-        setError(`${systemMessages.FETCH_ERROR} : ${error.message}. Try to reload page.`)
-        setIsLoading(false)
-      })
+    const fetchGenres = async () => {
+      await httpApi
+        .get(GENRES)
+        .then((response) => {
+          setData(response.data)
+          setIsLoading(false)
+        })
+        .catch((error) => {
+          setError(`${systemMessages.FETCH_ERROR} : ${error.message}. Try to reload page.`)
+          setIsLoading(false)
+        })
+    }
+
+    fetchGenres()
   }, [isAuthenticated, accessToken])
 
   if (isLoading) {

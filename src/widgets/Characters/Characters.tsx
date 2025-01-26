@@ -10,29 +10,34 @@ import { type CharactersType } from 'shared/types/CharacterTypes'
 import styles from './Characters.module.scss'
 
 export const Characters = () => {
-  const { isAuthenticated, accessToken } = useAuth()
+  const { isAuthenticated, accessToken, isInitialized } = useAuth()
   const [data, setData] = useState<CharactersType[]>([])
   const [savedError, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const { characterHeader, characterDesc, addCharacter, charactersTableName } = contentText
 
   useEffect(() => {
+    if (!isInitialized) return
     if (!isAuthenticated || !accessToken) {
       setError(`${systemMessages.FORBIDDEN_USER} or ${systemMessages.NO_TOKEN}.`)
       setIsLoading(false)
       return
     }
 
-    httpApi
-      .get(CHARACTERS)
-      .then((response) => {
-        setData(response.data)
-        setIsLoading(false)
-      })
-      .catch((error) => {
-        setError(`${systemMessages.FETCH_ERROR} : ${error.message}. Try to reload page.`)
-        setIsLoading(false)
-      })
+    const fetchCharacters = async () => {
+      await httpApi
+        .get(CHARACTERS)
+        .then((response) => {
+          setData(response.data)
+          setIsLoading(false)
+        })
+        .catch((error) => {
+          setError(`${systemMessages.FETCH_ERROR} : ${error.message}. Try to reload page.`)
+          setIsLoading(false)
+        })
+    }
+
+    fetchCharacters()
   }, [isAuthenticated, accessToken])
 
   if (isLoading) {

@@ -9,6 +9,7 @@ type AuthContextType = {
   login: (token: string) => void
   logout: () => void
   accessToken: string | null
+  isInitialized: boolean
 }
 
 const AuthContext = createContext<AuthContextType | null>(null)
@@ -16,6 +17,7 @@ const AuthContext = createContext<AuthContextType | null>(null)
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
   const [accessToken, setAccessToken] = useState<string | null>(null)
+  const [isInitialized, setIsInitialized] = useState<boolean>(false)
 
   const login = (token: string) => {
     localStorage.setItem('accessToken', token)
@@ -51,11 +53,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         logout()
       }
     }
-  })
+    setIsInitialized(true)
+  }, [])
 
   const contextValue = useMemo(
-    () => ({ isAuthenticated, login, logout, accessToken }),
-    [isAuthenticated, accessToken],
+    () => ({ isAuthenticated, login, logout, accessToken, isInitialized }),
+    [isAuthenticated, accessToken, isInitialized],
   )
 
   return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>

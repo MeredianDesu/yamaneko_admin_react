@@ -31,6 +31,7 @@ export const SelectedRelease = () => {
           setIsLoading(false)
         })
     }
+
     fetchRelease()
   }, [id])
 

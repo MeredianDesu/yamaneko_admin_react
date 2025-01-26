@@ -10,29 +10,33 @@ import { type ReleaseType } from 'shared/types/ReleaseType'
 import styles from './Releases.module.scss'
 
 export const Releases = () => {
-  const { isAuthenticated, accessToken } = useAuth()
+  const { isAuthenticated, accessToken, isInitialized } = useAuth()
   const [data, setData] = useState<ReleaseType[]>([])
   const [savedError, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
   useEffect(() => {
+    if (!isInitialized) return
     if (!isAuthenticated || !accessToken) {
       setError(`${systemMessages.FORBIDDEN_USER} or ${systemMessages.NO_TOKEN}.`)
       setIsLoading(false)
       return
     }
+    const fetchReleases = async () => {
+      await httpApi
+        .get(RELEASES)
+        .then((response) => {
+          setData(response.data)
+          setIsLoading(false)
+        })
+        .catch((error) => {
+          setError(`${systemMessages.FETCH_ERROR} : ${error.message}. Try to reload page.`)
+          setIsLoading(false)
+        })
+    }
 
-    httpApi
-      .get(RELEASES)
-      .then((response) => {
-        setData(response.data)
-        setIsLoading(false)
-      })
-      .catch((error) => {
-        setError(`${systemMessages.FETCH_ERROR} : ${error.message}. Try to reload page.`)
-        setIsLoading(false)
-      })
-  }, [isLoading])
+    fetchReleases()
+  }, [accessToken])
 
   if (isLoading) {
     return (

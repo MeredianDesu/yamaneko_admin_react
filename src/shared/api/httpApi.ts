@@ -1,3 +1,4 @@
+/* eslint-disable compat/compat */
 import axios, { type AxiosError, type AxiosInstance } from 'axios'
 import { getAuthToken } from 'features/Auth/getAuthToken'
 import { Slide, toast } from 'react-toastify'
@@ -5,17 +6,27 @@ import { systemMessages } from 'shared/constants/systemMessages'
 
 import { BASE_URL } from './routes'
 
-const { accessToken } = getAuthToken()
-
 export const httpApi: AxiosInstance = axios.create({
   baseURL: BASE_URL,
   headers: {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${accessToken}`,
   },
   withCredentials: true,
   maxRedirects: 0,
 })
+
+httpApi.interceptors.request.use(
+  (config) => {
+    const { accessToken } = getAuthToken()
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`
+    }
+    return config
+  },
+  (error) => {
+    Promise.reject(error)
+  },
+)
 
 httpApi.interceptors.response.use(
   (response) => {
@@ -34,7 +45,6 @@ httpApi.interceptors.response.use(
       transition: Slide,
     })
 
-    // eslint-disable-next-line compat/compat
     return Promise.reject(error)
   },
 )

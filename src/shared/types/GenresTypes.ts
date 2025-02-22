@@ -1,4 +1,4 @@
 export interface GenresType {
-  id: number
+  id: number | string
   name: string
 }

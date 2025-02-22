@@ -2,6 +2,7 @@ import { httpApi } from 'api/httpApi'
 import { CHARACTERS } from 'api/routes'
 import { useAuth } from 'features/Auth/useAuth'
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Table } from 'shared/components/Table/Table'
 import { contentText } from 'shared/constants/contentText'
 import { systemMessages } from 'shared/constants/systemMessages'
@@ -90,14 +91,15 @@ export const Characters = () => {
               {charactersTableName}
               <span className={styles.count}> {data.length}</span>
             </span>
-            <button type="button" className={styles.add_entity}>
-              {addCharacter}
-            </button>
+            <Link to="/dashboard/characters/create" className={styles.add_entity}>
+              {contentText.addCharacter}
+            </Link>
           </div>
           <Table
             className={styles.table_container}
             data={data}
             displayedValues={['id', 'originalName', 'translatedName']}
+            clickable
           />
         </div>
       </div>

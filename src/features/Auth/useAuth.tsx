@@ -1,6 +1,6 @@
 import { createContext, type ReactNode, useContext, useEffect, useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { Slide, toast } from 'react-toastify'
+import { notification } from 'shared/components/Notification/Notification'
 import { systemMessages } from 'shared/constants/systemMessages'
 import { getRoles } from 'shared/helpers/parseRoles'
 
@@ -38,23 +38,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (roles.includes('ADMIN')) {
         setIsAuthenticated(true)
         setAccessToken(token)
+        setIsInitialized(true)
       } else {
-        toast.error(systemMessages.FORBIDDEN, {
-          position: 'top-center',
-          autoClose: 3000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'dark',
-          transition: Slide,
-        })
+        notification({ message: systemMessages.FORBIDDEN, type: 'error' })
         logout()
       }
     }
-    setIsInitialized(true)
-  }, [])
+  }, [accessToken])
 
   const contextValue = useMemo(
     () => ({ isAuthenticated, login, logout, accessToken, isInitialized }),

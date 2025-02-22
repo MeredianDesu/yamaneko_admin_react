@@ -3,6 +3,7 @@ import { RELEASES } from 'api/routes'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { DetailsCard } from 'shared/components/DetailsCard/DetailsCard'
+import { notification } from 'shared/components/Notification/Notification'
 import { type ReleaseType } from 'shared/types/ReleaseType'
 import { DubbersList } from 'widgets/CharactersList/DubbersList'
 import { EpisodesList } from 'widgets/EpisodesList/EpisodesList'
@@ -35,6 +36,18 @@ export const SelectedRelease = () => {
     fetchRelease()
   }, [id])
 
+  const handleDelete = async () => {
+    await httpApi
+      .delete(`${RELEASES}/${id}`)
+      .then(() => {
+        notification({ message: 'Release was deleted successfully', type: 'success' })
+        navigate('/dashboard/releases')
+      })
+      .catch((error) => {
+        notification({ message: error.message, type: 'error' })
+      })
+  }
+
   const returnBack = () => {
     const idLength = id?.length ?? 0
     const path = location.pathname.substring(0, location.pathname.length - idLength)
@@ -62,9 +75,14 @@ export const SelectedRelease = () => {
               {'<'}
             </button>
             <h2>{data?.translatedName}</h2>
-            <button type="button" className={styles.edit_button}>
-              Edit
-            </button>
+            <div className={styles.management}>
+              <button type="button" className={styles.button} onClick={handleDelete}>
+                Delete
+              </button>
+              <button type="button" className={styles.button}>
+                Edit
+              </button>
+            </div>
           </div>
           <div className={styles.details}>
             <DetailsCard
@@ -79,7 +97,7 @@ export const SelectedRelease = () => {
               ]}
             />
             <EpisodesList />
-            <DubbersList characters={data?.dubbers} />
+            <DubbersList characters={data?.dubbers ?? []} />
           </div>
         </div>
       </div>

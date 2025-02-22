@@ -4,9 +4,10 @@ interface Props {
   className?: string
   displayedValues: string[]
   data: object[]
+  clickable: boolean
 }
 
-export const Table = ({ className, displayedValues = ['id'], data }: Props) => {
+export const Table = ({ className, displayedValues = ['id'], data, clickable }: Props) => {
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -18,7 +19,7 @@ export const Table = ({ className, displayedValues = ['id'], data }: Props) => {
     {} as Record<string, string>,
   )
 
-  const displayedReleases = data.map((release) => {
+  const displayedData = data.map((release) => {
     return Object.keys(headFields).reduce(
       (acc, field) => {
         const fieldParts = field.split('.')
@@ -48,19 +49,29 @@ export const Table = ({ className, displayedValues = ['id'], data }: Props) => {
           </tr>
         </thead>
         <tbody>
-          {displayedReleases.map((row, idx) => {
+          {displayedData.map((row, idx) => {
+            if (clickable) {
+              return (
+                // eslint-disable-next-line react/no-array-index-key
+                <tr
+                  key={idx}
+                  onClick={() => {
+                    const currentPath = location.pathname.endsWith('/')
+                      ? location.pathname.slice(0, -1)
+                      : location.pathname
+
+                    navigate(`${currentPath}/${row.id}`)
+                  }}
+                >
+                  {Object.keys(headFields).map((field) => (
+                    <td key={field}>{row[field]}</td>
+                  ))}
+                </tr>
+              )
+            }
             return (
               // eslint-disable-next-line react/no-array-index-key
-              <tr
-                key={idx}
-                onClick={() => {
-                  const currentPath = location.pathname.endsWith('/')
-                    ? location.pathname.slice(0, -1)
-                    : location.pathname
-
-                  navigate(`${currentPath}/${row.id}`)
-                }}
-              >
+              <tr key={idx}>
                 {Object.keys(headFields).map((field) => (
                   <td key={field}>{row[field]}</td>
                 ))}

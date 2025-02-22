@@ -1,9 +1,9 @@
 /* eslint-disable react/no-array-index-key */
 import styles from './DetailsCard.module.scss'
 
-interface Metadata {
+export interface Metadata {
   label: string
-  value: string
+  value: string | number
 }
 
 export interface Props {

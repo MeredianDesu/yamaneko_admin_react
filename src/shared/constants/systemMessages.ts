@@ -15,4 +15,7 @@ export enum systemMessages {
 
   // fetching
   FETCH_ERROR = 'Error while fetching',
+
+  //
+  LOW_BACK_RES = 'We are now running on low backend resources, please enter a direct link.',
 }

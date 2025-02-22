@@ -4,6 +4,7 @@ const ADDRESS = 'yamaneko.isn.one'
 const API_VER = '/v1'
 
 export const BASE_URL = `${PROTOCOL}${ADDRESS}/api`
+export const LOCAL_URL = 'http://localhost:8080/api'
 export const MASCOT = `${PROTOCOL}${ADDRESS}/files/mascot.jfif`
 
 export const LOGIN = `/auth${API_VER}/login`

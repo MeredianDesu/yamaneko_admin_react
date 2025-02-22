@@ -2,6 +2,7 @@ import { httpApi } from 'api/httpApi'
 import { RELEASES } from 'api/routes'
 import { useAuth } from 'features/Auth/useAuth'
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Table } from 'shared/components/Table/Table'
 import { contentText } from 'shared/constants/contentText'
 import { systemMessages } from 'shared/constants/systemMessages'
@@ -36,7 +37,7 @@ export const Releases = () => {
     }
 
     fetchReleases()
-  }, [accessToken])
+  }, [])
 
   if (isLoading) {
     return (
@@ -88,14 +89,15 @@ export const Releases = () => {
               {contentText.releasesTableName}
               <span className={styles.releases_count}> {data.length}</span>
             </span>
-            <button type="button" className={styles.add_release}>
+            <Link to="/dashboard/releases/create" className={styles.add_release}>
               {contentText.addRelease}
-            </button>
+            </Link>
           </div>
           <Table
             className={styles.table_container}
             data={data}
             displayedValues={['id', 'translatedName', 'originalName', 'status', 'updated']}
+            clickable
           />
         </div>
       </div>

@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import emailImg from 'shared/assets/icons/email.svg'
 import passwordImg from 'shared/assets/icons/password.svg'
 import { Input } from 'shared/components/Input/Input'
+import { notification } from 'shared/components/Notification/Notification'
 import { contentText } from 'shared/constants/contentText'
 
 import styles from './LogIn.module.scss'
@@ -31,20 +32,25 @@ export const Login = () => {
 
     const formData = getFormValues(values)
 
-    httpApi
-      .post(LOGIN, {
-        ...formData,
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          login(response.data.accessToken)
-          navigate('/dashboard')
-        }
-      })
-      .catch((error) => {
-        logout()
-        console.error(`Server error: ${error}`)
-      })
+    const sendCredentials = async () => {
+      await httpApi
+        .post(LOGIN, {
+          ...formData,
+        })
+        .then((response) => {
+          if (response.status === 200) {
+            login(response.data.accessToken)
+            navigate('/dashboard')
+            notification({ message: 'Log in successfully!', type: 'success' })
+          }
+        })
+        .catch((error) => {
+          logout()
+          notification({ message: error.message, type: 'error' })
+        })
+    }
+
+    sendCredentials()
   }
 
   return (

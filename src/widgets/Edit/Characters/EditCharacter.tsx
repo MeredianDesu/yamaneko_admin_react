@@ -87,7 +87,7 @@ export const EditCharacter = () => {
 
     const patchChanges = async () => {
       httpApi
-        .patch(CHARACTERS, { ...formData })
+        .patch(`${CHARACTERS}/${id}`, { ...formData })
         .then(() => {
           notification({ message: 'Changes were successfully submitted', type: 'success' })
           navigate('/dashboard/releases')

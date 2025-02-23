@@ -120,7 +120,7 @@ export const EditRelease = () => {
 
     const patchChanges = async () => {
       httpApi
-        .patch(RELEASES, { ...formData })
+        .patch(`${RELEASES}/${id}`, { ...formData })
         .then(() => {
           notification({ message: 'Changes were successfully submitted', type: 'success' })
           navigate('/dashboard/releases')

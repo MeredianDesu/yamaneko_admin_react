@@ -67,7 +67,7 @@ export const SelectedCharacter = () => {
             <button type="button" className={styles.button} onClick={handleDelete}>
               Delete
             </button>
-            <button type="button" className={styles.button}>
+            <button type="button" className={styles.button} onClick={() => navigate('edit')}>
               Edit
             </button>
           </div>

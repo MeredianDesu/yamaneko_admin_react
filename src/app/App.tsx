@@ -8,6 +8,8 @@ import { CreateCharacter } from 'widgets/Create/CreateCharacter/CreateCharacter'
 import { CreateGenre } from 'widgets/Create/CreateGenre/CreateGenre'
 import { CreateRelease } from 'widgets/Create/CreateRelease/CreateRelease'
 import { DashboardInfo } from 'widgets/DashboardInfo/DashboardInfo'
+import { EditCharacter } from 'widgets/Edit/Characters/EditCharacter'
+import { EditRelease } from 'widgets/Edit/Releases/EditRelease'
 import { Genres } from 'widgets/Genres/Genres'
 import { Login } from 'widgets/Login/Login'
 import { Releases } from 'widgets/Releases/Releases'
@@ -33,10 +35,12 @@ const App = () => {
           <Route index element={<DashboardInfo />} />
           <Route path="releases" element={<Releases />} />
           <Route path="releases/:id" element={<SelectedRelease />} />
+          <Route path="releases/:id/edit" element={<EditRelease />} />
           <Route path="releases/create" element={<CreateRelease />} />
 
           <Route path="characters" element={<Characters />} />
           <Route path="characters/:id" element={<SelectedCharacter />} />
+          <Route path="characters/:id/edit" element={<EditCharacter />} />
           <Route path="characters/create" element={<CreateCharacter />} />
 
           <Route path="team" element={<Team />} />

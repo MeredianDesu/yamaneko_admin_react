@@ -59,7 +59,7 @@ export const CreateRelease = () => {
     const fetchDubbers = async () => {
       await httpApi
         .get(TEAM)
-        .then((response) => setDubbers(response.data))
+        .then((response) => setDubbers(response.data || []))
         .catch((error) => {
           notification({ message: error.message, type: 'error' })
         })
@@ -73,7 +73,7 @@ export const CreateRelease = () => {
       await httpApi
         .get(CHARACTERS)
         .then((result) => {
-          setCharacters(result.data)
+          setCharacters(result.data || [])
         })
         .catch((error) => {
           notification({ message: error.message, type: 'error' })
@@ -87,7 +87,7 @@ export const CreateRelease = () => {
       await httpApi
         .get(GENRES)
         .then((result) => {
-          setGenres(result.data)
+          setGenres(result.data || [])
         })
         .catch((error) => {
           notification({ message: error.message, type: 'error' })

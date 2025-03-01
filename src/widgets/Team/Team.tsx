@@ -28,7 +28,7 @@ export const Team = () => {
       await httpApi
         .get(TEAM)
         .then((response) => {
-          setData(response.data)
+          setData(response.data || [])
           setIsLoading(false)
         })
         .catch((error) => {
@@ -98,6 +98,7 @@ export const Team = () => {
             className={styles.table_container}
             data={data}
             displayedValues={['id', 'name', 'user.username']}
+            clickable={false}
           />
         </div>
       </div>

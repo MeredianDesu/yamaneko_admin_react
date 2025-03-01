@@ -27,7 +27,7 @@ export const Releases = () => {
       await httpApi
         .get(RELEASES)
         .then((response) => {
-          setData(response.data)
+          setData(response.data ?? [])
           setIsLoading(false)
         })
         .catch((error) => {

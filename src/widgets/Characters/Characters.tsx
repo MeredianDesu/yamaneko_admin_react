@@ -29,7 +29,7 @@ export const Characters = () => {
       await httpApi
         .get(CHARACTERS)
         .then((response) => {
-          setData(response.data)
+          setData(response.data || [])
           setIsLoading(false)
         })
         .catch((error) => {

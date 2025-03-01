@@ -34,9 +34,17 @@ export const Table = ({ className, displayedValues = ['id'], data, clickable }: 
         acc[field] = value ?? 'unknown'
         return acc
       },
-      {} as Record<string, unknown>,
+      // TODO fix any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      {} as Record<string, any>,
     )
   })
+
+  const onClick = (id: number) => {
+    const currentPath = location.pathname.endsWith('/') ? location.pathname.slice(0, -1) : location.pathname
+
+    navigate(`${currentPath}/${id}`)
+  }
 
   return (
     <div className={className}>
@@ -53,16 +61,7 @@ export const Table = ({ className, displayedValues = ['id'], data, clickable }: 
             if (clickable) {
               return (
                 // eslint-disable-next-line react/no-array-index-key
-                <tr
-                  key={idx}
-                  onClick={() => {
-                    const currentPath = location.pathname.endsWith('/')
-                      ? location.pathname.slice(0, -1)
-                      : location.pathname
-
-                    navigate(`${currentPath}/${row.id}`)
-                  }}
-                >
+                <tr key={idx} onClick={() => onClick(row.id)}>
                   {Object.keys(headFields).map((field) => (
                     <td key={field}>{row[field]}</td>
                   ))}

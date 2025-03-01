@@ -29,7 +29,7 @@ export const Genres = () => {
       await httpApi
         .get(GENRES)
         .then((response) => {
-          setData(response.data)
+          setData(response.data || [])
           setIsLoading(false)
         })
         .catch((error) => {

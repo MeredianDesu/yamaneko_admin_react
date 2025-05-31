@@ -1,13 +1,21 @@
+/* eslint-disable react/no-array-index-key */
 import { useLocation, useNavigate } from 'react-router-dom'
 
+import styles from './Table.module.scss'
+
+export interface Action {
+  name: string
+  aOnClick: (userId: string | number, userName: string) => Promise<void>
+}
 interface Props {
   className?: string
   displayedValues: string[]
   data: object[]
   clickable: boolean
+  actions?: Action[]
 }
 
-export const Table = ({ className, displayedValues = ['id'], data, clickable }: Props) => {
+export const Table = ({ className, displayedValues = ['id'], data, clickable, actions }: Props) => {
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -54,6 +62,7 @@ export const Table = ({ className, displayedValues = ['id'], data, clickable }: 
             {Object.keys(headFields).map((key) => (
               <th key={key}>{headFields[key]}</th>
             ))}
+            {actions && <th className="table_action_header">Action</th>}
           </tr>
         </thead>
         <tbody>
@@ -65,6 +74,7 @@ export const Table = ({ className, displayedValues = ['id'], data, clickable }: 
                   {Object.keys(headFields).map((field) => (
                     <td key={field}>{row[field]}</td>
                   ))}
+                  {actions && actions.map((action, idx) => <th key={idx}>{action.name}</th>)}
                 </tr>
               )
             }
@@ -74,6 +84,24 @@ export const Table = ({ className, displayedValues = ['id'], data, clickable }: 
                 {Object.keys(headFields).map((field) => (
                   <td key={field}>{row[field]}</td>
                 ))}
+                {/* {actions && actions.map((action, idx) => <th key={idx}>{action}</th>)} */}
+                <td>
+                  {actions && (
+                    <div className={styles.table_actions}>
+                      {actions.map((action) => (
+                        <span
+                          className={styles.table_action_btn}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            action.aOnClick(row.id, row.username)
+                          }}
+                        >
+                          {action.name}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </td>
               </tr>
             )
           })}

@@ -24,4 +24,8 @@ export enum contentText {
   genresDesc = 'Manage genre list',
   addGenre = '+ Add genre',
   genreTableName = 'All genres',
+  // users component
+  usersHeader = 'Users',
+  usersDesc = 'Manage users',
+  userTableName = 'All users',
 }

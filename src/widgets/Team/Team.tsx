@@ -2,6 +2,7 @@ import { httpApi } from 'api/httpApi'
 import { TEAM } from 'api/routes'
 import { useAuth } from 'features/Auth/useAuth'
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Table } from 'shared/components/Table/Table'
 import { contentText } from 'shared/constants/contentText'
 import { systemMessages } from 'shared/constants/systemMessages'
@@ -90,9 +91,9 @@ export const Team = () => {
               {teamTableName}
               <span className={styles.count}> {data.length}</span>
             </span>
-            <button type="button" className={styles.add_entity}>
+            {/* <Link to="/dashboard/team" className={styles.add_entity}>
               {addTeamMember}
-            </button>
+            </Link> */}
           </div>
           <Table
             className={styles.table_container}

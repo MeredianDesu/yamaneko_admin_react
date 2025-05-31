@@ -5,7 +5,6 @@ import { type ReleasePostEntity } from 'entities/releases/releasePostEntity'
 import { type SyntheticEvent, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { notification } from 'shared/components/Notification/Notification'
-import { systemMessages } from 'shared/constants/systemMessages'
 import { type CharactersType } from 'shared/types/CharacterTypes'
 import { type GenresType } from 'shared/types/GenresTypes'
 import { type TeamType } from 'shared/types/TeamType'
@@ -15,15 +14,10 @@ import styles from './CreateRelease.module.scss'
 interface Data {
   label: string
   description: string
+  type: 'text' | 'file'
   name: keyof Pick<
     ReleasePostEntity,
-    | 'originalName'
-    | 'translatedName'
-    | 'posterImageUrl'
-    | 'previewVideoUrl'
-    | 'videoUrl'
-    | 'synopsis'
-    | 'info'
+    'originalName' | 'translatedName' | 'ageRestriction' | 'maxEpisodes' | 'videoUrl' | 'synopsis' | 'info'
   >
 }
 
@@ -33,17 +27,32 @@ interface DubberCharacterPair {
 }
 
 const data: Data[] = [
-  { label: 'Original name:', description: 'Enter the original name of the title.', name: 'originalName' },
+  {
+    label: 'Original name:',
+    description: 'Enter the original name of the title.',
+    name: 'originalName',
+    type: 'text',
+  },
   {
     label: 'Translated name:',
     description: 'Enter the translated name of the title.',
     name: 'translatedName',
+    type: 'text',
   },
-  { label: 'Poster image:', description: systemMessages.LOW_BACK_RES, name: 'posterImageUrl' },
-  { label: 'Trailer:', description: systemMessages.LOW_BACK_RES, name: 'previewVideoUrl' },
-  { label: 'Video:', description: systemMessages.LOW_BACK_RES, name: 'videoUrl' },
-  { label: 'Synopsis:', description: 'Enter the synopsis of this title.', name: 'synopsis' },
-  { label: 'About:', description: 'Enter the text about this title.', name: 'info' },
+  {
+    label: 'Age restriction:',
+    description: 'Enter the age restriction for this release',
+    name: 'ageRestriction',
+    type: 'text',
+  },
+  {
+    label: 'Maximum episodes:',
+    description: 'Enter the maximum episodes of this release',
+    name: 'maxEpisodes',
+    type: 'text',
+  },
+  { label: 'Synopsis:', description: 'Enter the synopsis of this title.', name: 'synopsis', type: 'text' },
+  { label: 'About:', description: 'Enter the text about this title.', name: 'info', type: 'text' },
 ]
 
 export const CreateRelease = () => {
@@ -176,7 +185,7 @@ export const CreateRelease = () => {
               <div key={row.label} className={styles.row}>
                 <div className={styles.input_row}>
                   <div className={styles.prop}>{row.label}</div>
-                  <input type="text" name={row.name} />
+                  <input type={row.type} name={row.name} />
                 </div>
                 <div className={styles.description}>
                   <span>{row.description}</span>

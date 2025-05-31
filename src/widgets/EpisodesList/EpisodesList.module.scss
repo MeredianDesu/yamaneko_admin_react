@@ -1,23 +1,105 @@
 .episodes_list {
   display: flex;
-  flex: 1;
-
+  flex-direction: column;
+  // gap: 20px;
+  margin-bottom: 10px;
   border-top: 1px solid #c3c3c3;
+}
 
-  .episodes_list_header {
-    display: flex;
-    flex-direction: column;
+.episodes_list_header {
+  display: flex;
+  flex-direction: column;
+  color: white;
+}
 
-    color: white;
+.block_name {
+  font-size: 24px;
+  font-weight: bold;
+}
 
-    .block_name {
-      font-size: 24px;
-    }
+.block_subject {
+  font-size: 16px;
+  color: #c3c3c3;
+}
 
-    .block_subject {
-      font-size: 16px;
+.episodes {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+}
 
-      color: #c3c3c3;
-    }
-  }
+.card,
+.card_add_episode {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 8px;
+  background-color: #222;
+  width: 150px;
+  height: 200px;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.card:hover,
+.card_add_episode:hover {
+  background-color: #333;
+}
+
+.thumb {
+  width: 100%;
+  height: 120px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.card_text {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  text-align: center;
+}
+
+.episode_name {
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.episode_number {
+  color: #c3c3c3;
+  font-size: 14px;
+}
+
+/* Стили для кнопки "Добавить эпизод" */
+.card_add_episode {
+  justify-content: center;
+  background-color: #333;
+}
+
+.add_button_vector {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: bold;
+  background-color: #007bff;
+  color: white;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  transition: background-color 0.2s;
+}
+
+.add_button_vector:hover {
+  background-color: #0056b3;
+}
+
+.add_text {
+  color: white;
+  font-size: 14px;
 }

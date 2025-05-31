@@ -92,11 +92,11 @@ export const SelectedRelease = () => {
                 { label: 'Translated name: ', value: data?.translatedName || 'N/A' },
                 { label: 'Status: ', value: data?.status || 'N/A' },
                 { label: 'Age restriction: ', value: data?.ageRestriction || 'N/A' },
-                { label: 'Updated: ', value: data?.updated || 'N/A' },
+                { label: 'Updated: ', value: data?.updatedAt || 'N/A' },
                 { label: 'Uploaded: ', value: data?.uploadedAt || 'N/A' },
               ]}
             />
-            <EpisodesList />
+            <EpisodesList episodes={data?.episodes ?? []} />
             <DubbersList characters={data?.dubbers ?? []} />
           </div>
         </div>

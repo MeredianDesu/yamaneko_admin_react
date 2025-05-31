@@ -1,22 +1,18 @@
 /* eslint-disable compat/compat */
-import axios, { type AxiosError, type AxiosInstance } from 'axios'
+import axios, { type AxiosError, type AxiosInstance, HttpStatusCode } from 'axios'
 import { getAuthToken } from 'features/Auth/getAuthToken'
+import { removeAuthToken } from 'features/Auth/removeAuthToken'
+import { setAuthToken } from 'features/Auth/setAuthToken'
 import { notification } from 'shared/components/Notification/Notification'
 
-import { BASE_URL } from './routes'
-
-declare module 'axios' {
-  export interface InternalAxiosRequestConfig {
-    _retryCount?: number // Добавляем кастомное свойство
-  }
-}
+import { BASE_URL, REFRESH } from './routes'
 
 export const httpApi: AxiosInstance = axios.create({
   baseURL: BASE_URL,
+  // baseURL: LOCAL_URL,
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: true,
   maxRedirects: 0,
   timeout: 15000,
 })
@@ -27,54 +23,45 @@ httpApi.interceptors.request.use(
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`
     }
+
+    // Проверяем, что config.url существует, прежде чем использовать его
+    if (config.url && config.url.includes('yamanekospace.fra1.digitaloceanspaces.com')) {
+      delete config.headers.Authorization
+    }
+
     return config
   },
   (error) => {
     notification({ message: error.message, type: 'error' })
-    Promise.reject(error)
+    return Promise.reject(error)
   },
 )
 
-const MAX_RETRIES = 3
-
 httpApi.interceptors.response.use(
   (response) => response,
-  async (error: AxiosError) => {
-    const { config, response } = error
+  async (error) => {
+    const { accessToken } = getAuthToken()
+    if (error.response?.status === HttpStatusCode.Unauthorized && accessToken) {
+      try {
+        const { data } = await httpApi.post(REFRESH)
+        setAuthToken(data.accessToken)
+        error.config.headers.Authorization = `Bearer ${data.accessToken}`
 
-    if (!config) {
-      return Promise.reject(error)
+        return httpApi(error.config)
+      } catch (refreshError) {
+        const requestError = refreshError as AxiosError
+        if (
+          requestError.status === HttpStatusCode.NotFound ||
+          requestError.status === HttpStatusCode.Forbidden
+        ) {
+          removeAuthToken()
+          notification({ message: error.message, type: 'error' })
+        }
+
+        return Promise.reject(error)
+      }
     }
 
-    const retryCount = (config._retryCount || 0) + 1
-
-    // if (response?.status === 401 && retryCount < MAX_RETRIES) {
-    //   config._retryCount = retryCount
-
-    //   try {
-    //     console.log(response.status)
-    //     const fallbackResponse = await httpApi.post(REFRESH, {
-    //       accessToken: getAuthToken().accessToken,
-    //     })
-
-    //     const newAccessToken = fallbackResponse.data.accessToken
-
-    //     if (newAccessToken) {
-    //       config.headers.Authorization = `Bearer ${newAccessToken}`
-    //       setAuthToken(newAccessToken)
-    //     }
-    //     if (fallbackResponse.status === 404) {
-    //       removeAuthToken()
-    //       notification({ message: 'You need to login again', type: 'warning' })
-    //     }
-
-    //     return httpApi(config)
-    //   } catch (refreshError) {
-    //     return Promise.reject(refreshError)
-    //   }
-    // }
-
-    notification({ message: error.message, type: 'error' })
     return Promise.reject(error)
   },
 )

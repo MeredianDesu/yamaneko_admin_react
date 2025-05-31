@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const token = localStorage.getItem('accessToken')
     if (token) {
       const roles = getRoles(token)
-      if (roles.includes('ADMIN')) {
+      if (roles.includes('ROLE_ADMIN')) {
         setIsAuthenticated(true)
         setAccessToken(token)
         setIsInitialized(true)
@@ -43,8 +43,27 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         notification({ message: systemMessages.FORBIDDEN, type: 'error' })
         logout()
       }
+    } else {
+      setIsAuthenticated(false)
+      setAccessToken(null)
+      setIsInitialized(true)
     }
-  }, [accessToken])
+
+    // Добавление слушателя на изменения в localStorage
+    const handleStorageChange = () => {
+      const token = localStorage.getItem('accessToken')
+      if (!token) {
+        setIsAuthenticated(false)
+        setAccessToken(null)
+      }
+    }
+
+    window.addEventListener('storage', handleStorageChange)
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange)
+    }
+  }, [])
 
   const contextValue = useMemo(
     () => ({ isAuthenticated, login, logout, accessToken, isInitialized }),

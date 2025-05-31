@@ -57,23 +57,23 @@ export const Releases = () => {
     )
   }
 
-  if (savedError) {
-    return (
-      <div className={styles.container}>
-        <div className={styles.content}>
-          <div className={styles.head}>
-            <span className={styles.page_name}>{contentText.releaseHeader}</span>
-            <span className={styles.page_subject}>{contentText.releasesDesc}</span>
-          </div>
-          <div className={styles.releases_data}>
-            <div className={styles.head_bar}>
-              <span>{savedError}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
+  // if (savedError) {
+  //   return (
+  //     <div className={styles.container}>
+  //       <div className={styles.content}>
+  //         <div className={styles.head}>
+  //           <span className={styles.page_name}>{contentText.releaseHeader}</span>
+  //           <span className={styles.page_subject}>{contentText.releasesDesc}</span>
+  //         </div>
+  //         <div className={styles.releases_data}>
+  //           <div className={styles.head_bar}>
+  //             <span>{savedError}</span>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   )
+  // }
 
   return (
     <div className={styles.container}>
@@ -96,7 +96,7 @@ export const Releases = () => {
           <Table
             className={styles.table_container}
             data={data}
-            displayedValues={['id', 'translatedName', 'originalName', 'status', 'updated']}
+            displayedValues={['id', 'translatedName', 'originalName', 'status', 'updatedAt']}
             clickable
           />
         </div>

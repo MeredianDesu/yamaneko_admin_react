@@ -3,6 +3,7 @@ import charactersImg from 'shared/assets/sidebarIcons/character.png'
 import dubbersImg from 'shared/assets/sidebarIcons/dubber.png'
 import genresImg from 'shared/assets/sidebarIcons/genres.png'
 import releasesImg from 'shared/assets/sidebarIcons/releases.png'
+import usersImg from 'shared/assets/sidebarIcons/users.png'
 
 import style from './Sidebar.module.scss'
 
@@ -33,6 +34,12 @@ export const Sidebar = () => {
             <Link to="/dashboard/genres">
               <img src={genresImg} alt="" />
               <span>Genres</span>
+            </Link>
+          </li>
+          <li>
+            <Link to="/dashboard/users">
+              <img src={usersImg} alt="" />
+              <span>Users</span>
             </Link>
           </li>
         </ul>

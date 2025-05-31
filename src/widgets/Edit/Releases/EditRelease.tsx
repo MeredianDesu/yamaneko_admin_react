@@ -1,5 +1,6 @@
+/* eslint-disable compat/compat */
 import { httpApi } from 'api/httpApi'
-import { RELEASES } from 'api/routes'
+import { GETPRESIGNEDURL, RELEASES } from 'api/routes'
 import { type ReleasePostEntity } from 'entities/releases/releasePostEntity'
 import { type SyntheticEvent, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -12,6 +13,7 @@ import styles from './EditRelease.module.scss'
 interface Data {
   label: string
   description: string
+  type: 'text' | 'file'
   name: keyof Pick<
     ReleasePostEntity,
     | 'originalName'
@@ -28,6 +30,14 @@ interface Data {
 export const EditRelease = () => {
   const [release, setRelease] = useState<ReleaseType>()
   const [formData, setFormData] = useState<Partial<ReleasePostEntity>>({})
+
+  const [poster, setPoster] = useState<File | null>(null)
+  const [posterLink, setPosterLink] = useState<string>()
+  const [posterLinkUpload, setPosterLinkUpload] = useState<string>()
+
+  const [trailer, setTrailer] = useState<File | null>(null)
+  const [trailerLink, setTrailerLink] = useState<string>()
+  const [trailerLinkUpload, setTrailerLinkUpload] = useState<string>()
 
   const navigate = useNavigate()
   const { id } = useParams<string>()
@@ -47,53 +57,87 @@ export const EditRelease = () => {
     fetchRelease()
   }, [id])
 
+  useEffect(() => {
+    const getPosterLinkUpload = async () => {
+      await httpApi
+        .get(`${GETPRESIGNEDURL}?id=${id}&fileName=poster&type=release`)
+        .then((response) => {
+          setPosterLinkUpload(response.data.uploadLink)
+          setPosterLink(response.data.link)
+        })
+        .catch((error) => {
+          notification({ message: error.message, type: 'error' })
+        })
+    }
+
+    getPosterLinkUpload()
+  }, [])
+
+  useEffect(() => {
+    const getTrailerLinkUpload = async () => {
+      await httpApi
+        .get(`${GETPRESIGNEDURL}?id=${id}&fileName=trailer&type=release`)
+        .then((response) => {
+          setTrailerLinkUpload(response.data.uploadLink)
+          setTrailerLink(response.data.link)
+        })
+        .catch((error) => {
+          notification({ message: error.message, type: 'error' })
+        })
+    }
+
+    getTrailerLinkUpload()
+  }, [])
+
   const data: Data[] = [
     {
       label: 'Original name:',
       description: 'Enter the original name of the title.',
       name: 'originalName',
       value: release?.originalName || 'N/A',
+      type: 'text',
     },
     {
       label: 'Translated name:',
       description: 'Enter the translated name of the title.',
       name: 'translatedName',
       value: release?.translatedName || 'N/A',
+      type: 'text',
     },
     {
       label: 'Poster image:',
       description: systemMessages.LOW_BACK_RES,
       name: 'posterImageUrl',
       value: release?.posterImageUrl || 'N/A',
+      type: 'file',
     },
     {
       label: 'Trailer:',
       description: systemMessages.LOW_BACK_RES,
       name: 'previewVideoUrl',
       value: release?.previewVideoUrl || 'N/A',
-    },
-    {
-      label: 'Video:',
-      description: systemMessages.LOW_BACK_RES,
-      name: 'videoUrl',
-      value: release?.videoUrl || 'N/A',
+      type: 'file',
     },
     {
       label: 'Synopsis:',
       description: 'Enter the synopsis of this title.',
       name: 'synopsis',
       value: release?.synopsis || 'N/A',
+      type: 'text',
     },
     {
       label: 'About:',
       description: 'Enter the text about this title.',
       name: 'info',
       value: release?.info || 'N/A',
+      type: 'text',
     },
   ]
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
+    const { name, value, type } = e.target
+
+    if (type === 'file') return
 
     setFormData((prev) => {
       const updated = { ...prev }
@@ -110,13 +154,74 @@ export const EditRelease = () => {
     })
   }
 
+  const handleVideoChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    name: 'posterImageUrl' | 'previewVideoUrl',
+  ) => {
+    if (e.target.files?.[0]) {
+      const file = e.target.files[0]
+      if (name === 'posterImageUrl') {
+        setPoster(file)
+        setFormData((prev) => ({
+          ...prev,
+          posterImageUrl: posterLink,
+        }))
+      }
+      if (name === 'previewVideoUrl') {
+        setTrailer(file)
+        setFormData((prev) => ({
+          ...prev,
+          previewVideoUrl: trailerLink,
+        }))
+      }
+    }
+  }
+
   const onSubmit = async (e: SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    if (Object.keys(formData).length === 0) {
+    const hasChanges = Object.keys(formData).length > 0 || poster || trailer
+
+    if (!hasChanges) {
       notification({ message: 'No changes detected.', type: 'info' })
       return
     }
+
+    const uploadFilesToCloud = async () => {
+      const uploadPromises = []
+      const acl = 'public-read'
+
+      try {
+        if (poster && posterLinkUpload) {
+          uploadPromises.push(
+            httpApi.put(posterLinkUpload, poster, {
+              headers: {
+                'Content-Type': poster?.type,
+                'X-Amz-Acl': acl,
+              },
+              timeout: 2160000,
+            }),
+          )
+        }
+        if (trailer && trailerLinkUpload) {
+          uploadPromises.push(
+            httpApi.put(trailerLinkUpload, trailer, {
+              headers: {
+                'Content-Type': trailer?.type,
+                'X-Amz-Acl': acl,
+              },
+              timeout: 2160000,
+            }),
+          )
+        }
+
+        await Promise.all(uploadPromises)
+      } catch (error) {
+        notification({ message: 'Uploading failed', type: 'error' })
+      }
+    }
+
+    await uploadFilesToCloud()
 
     const patchChanges = async () => {
       httpApi
@@ -155,12 +260,24 @@ export const EditRelease = () => {
               <div key={row.label} className={styles.row}>
                 <div className={styles.input_row}>
                   <div className={styles.prop}>{row.label}</div>
-                  <input
-                    type="text"
-                    name={row.name}
-                    value={formData[row.name] ?? release?.[row.name] ?? ''}
-                    onChange={handleChange}
-                  />
+                  {row.type === 'text' ? (
+                    <input
+                      type={row.type}
+                      name={row.name}
+                      value={formData[row.name] ?? release?.[row.name] ?? ''}
+                      onChange={handleChange}
+                    />
+                  ) : (
+                    (row.name === 'previewVideoUrl' || row.name === 'posterImageUrl') && (
+                      <input
+                        type={row.type}
+                        name={row.name}
+                        onChange={(e) =>
+                          handleVideoChange(e, row.name as 'posterImageUrl' | 'previewVideoUrl')
+                        }
+                      />
+                    )
+                  )}
                 </div>
                 <div className={styles.description}>
                   <span>{row.description}</span>

@@ -1,0 +1,176 @@
+.container {
+  margin-left: 250px;
+  min-height: calc(100vh - 60px);
+  margin-top: 60px;
+  background-color: #ecf0f1;
+  font-family: 'Code Sans 3';
+  font-weight: 400;
+  font-size: 24px;
+}
+
+.content {
+  font-family: 'Source Sans 3';
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: calc(100vh - 60px);
+  min-height: calc(100vh - 250px);
+  padding: 20px;
+  background-color: #2b2b2b;
+  overflow: auto;
+}
+
+.head {
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.back_button {
+  all: unset;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  height: 100%;
+  width: 20px;
+  cursor: pointer;
+}
+
+.page_name {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.page_subject {
+  font-size: 16px;
+  font-weight: 500;
+  color: rgb(195, 195, 195);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  color: white;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.input_row {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.prop {
+  min-width: 15%;
+}
+
+input,
+select {
+  all: unset;
+  min-width: 50%;
+  background-color: #434343;
+  border-radius: 8px;
+  font-size: 16px;
+  padding: 10px;
+}
+
+.description {
+  color: #c3c3c3;
+  font-size: 14px;
+}
+
+.submit_form_container {
+  width: 100%;
+  margin-top: 10px;
+  display: flex;
+}
+
+.submit_form {
+  all: unset;
+  cursor: pointer;
+  background-color: #fd4249;
+  border-radius: 8px;
+  width: 100%;
+  height: 80%;
+  max-width: 100px;
+  text-align: center;
+  padding: 5px;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.input_row {
+  display: flex;
+  align-items: center;
+}
+
+.input_row:nth-child(2) {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.file_input_button {
+  background-color: #fd4249;
+  color: white;
+  font-size: 16px;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    transform 0.1s ease;
+  border: none;
+  outline: none;
+  text-align: center;
+  min-width: 200px;
+}
+
+.file_input_button:hover {
+  background-color: #e03b40;
+}
+
+.file_input_button:active {
+  transform: scale(0.98);
+}
+
+.file_input {
+  display: none;
+}
+
+.file_name {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #c3c3c3;
+  text-align: center;
+}
+
+.progressBar {
+  // width: 100%; /* Задаёт ширину прогресс-бара */
+  height: 10px; /* Задаёт высоту прогресс-бара */
+  appearance: none; /* Отключает стандартный стиль браузера */
+  border-radius: 5px; /* Скругляет углы */
+  background-color: #f3f3f3; /* Цвет фона */
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.progressBar::-webkit-progress-bar {
+  background-color: #f3f3f3; /* Цвет фона прогресс-бара */
+  border-radius: 5px;
+}
+
+.progressBar::-webkit-progress-value {
+  background-color: #4caf50; /* Цвет заполненной части */
+  border-radius: 5px;
+}
+
+.progressBar::-moz-progress-bar {
+  background-color: #4caf50; /* Цвет заполненной части */
+  border-radius: 5px;
+}

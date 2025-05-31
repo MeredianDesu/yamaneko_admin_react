@@ -44,10 +44,10 @@ export const EpisodeAddition = () => {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, quality: string) => {
     const file = event.target.files?.[0] || null
-    if (file && !file.name.endsWith('.m3u8')) {
-      notification({ message: 'Only .m3u8 files are allowed!', type: 'error' })
-      return
-    }
+    // if (file && !file.name.endsWith('.m3u8')) {
+    //   notification({ message: 'Only .m3u8 files are allowed!', type: 'error' })
+    //   return
+    // }
     setFiles((prev) => ({ ...prev, [quality]: file }))
   }
 

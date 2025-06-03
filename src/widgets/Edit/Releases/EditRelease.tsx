@@ -60,7 +60,7 @@ export const EditRelease = () => {
   useEffect(() => {
     const getPosterLinkUpload = async () => {
       await httpApi
-        .get(`${GETPRESIGNEDURL}?id=${id}&fileName=poster&type=release`)
+        .get(`${GETPRESIGNEDURL}?id=${id}&fileName=poster&type=release&isEpisode=false`)
         .then((response) => {
           setPosterLinkUpload(response.data.uploadLink)
           setPosterLink(response.data.link)
@@ -76,7 +76,7 @@ export const EditRelease = () => {
   useEffect(() => {
     const getTrailerLinkUpload = async () => {
       await httpApi
-        .get(`${GETPRESIGNEDURL}?id=${id}&fileName=trailer&type=release`)
+        .get(`${GETPRESIGNEDURL}?id=${id}&fileName=trailer&type=release&isEpisode=false`)
         .then((response) => {
           setTrailerLinkUpload(response.data.uploadLink)
           setTrailerLink(response.data.link)

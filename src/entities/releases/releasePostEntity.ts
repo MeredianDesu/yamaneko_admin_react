@@ -9,6 +9,7 @@ export interface ReleasePostEntity {
   previewVideoUrl: string
   videoUrl: string
   synopsis: string
+  status: string
   info: string
   dubbers: DubbersPostEntity[]
   genres: number[]

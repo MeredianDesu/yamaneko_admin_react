@@ -42,13 +42,30 @@ export const EpisodeAddition = () => {
     fetchLinks()
   }, [id])
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, quality: string) => {
+  // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, quality: string) => {
+  //   const file = event.target.files?.[0] || null
+  // if (file && !file.name.endsWith('.m3u8')) {
+  //   notification({ message: 'Only .m3u8 files are allowed!', type: 'error' })
+  //   return
+  // }
+  //   setFiles((prev) => ({ ...prev, [quality]: file }))
+  // }
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>, quality: string) => {
     const file = event.target.files?.[0] || null
-    // if (file && !file.name.endsWith('.m3u8')) {
-    //   notification({ message: 'Only .m3u8 files are allowed!', type: 'error' })
-    //   return
-    // }
+    if (!file) return
+
     setFiles((prev) => ({ ...prev, [quality]: file }))
+
+    try {
+      const response = await httpApi.get(
+        `${GETPRESIGNEDURL}?id=${id}&fileName=${quality}&type=release&isEpisode=true`,
+      )
+      setUploadLinks((prev) => ({ ...prev, [quality]: response.data.uploadLink }))
+      setVideoLinks((prev) => ({ ...prev, [quality]: response.data.link }))
+    } catch (error) {
+      notification({ message: `Error fetching upload link for ${quality}`, type: 'error' })
+    }
   }
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -64,23 +81,29 @@ export const EpisodeAddition = () => {
     }
 
     try {
-      await Promise.all(
+      const uploadedQualities = await Promise.all(
         qualities
-          .filter((quality) => files[quality])
-          .map((quality) =>
-            httpApi.put(uploadLinks[quality], files[quality], {
+          .filter((quality) => files[quality] && uploadLinks[quality])
+          .map(async (quality) => {
+            await httpApi.put(uploadLinks[quality], files[quality], {
               headers: { 'Content-Type': files[quality]?.type, 'X-Amz-Acl': acl },
               timeout: 2160000,
               onUploadProgress: (progressEvent) => updateProgress(quality, progressEvent),
-            }),
-          ),
+            })
+            return quality
+          }),
       )
+
+      const uploadedVideoLinks = uploadedQualities.map((quality) => ({
+        quality,
+        url: videoLinks[quality],
+      }))
 
       await httpApi.patch(`${RELEASES}/${id}`, {
         episodes: [
           {
             episodeName,
-            qualities: qualities.map((q) => ({ quality: q, url: videoLinks[q] })),
+            qualities: uploadedVideoLinks,
           },
         ],
       })

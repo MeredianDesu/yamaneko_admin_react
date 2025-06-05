@@ -18,6 +18,8 @@ interface Data {
     ReleasePostEntity,
     | 'originalName'
     | 'translatedName'
+    | 'status'
+    | 'maxEpisodes'
     | 'posterImageUrl'
     | 'previewVideoUrl'
     | 'videoUrl'
@@ -102,6 +104,20 @@ export const EditRelease = () => {
       description: 'Enter the translated name of the title.',
       name: 'translatedName',
       value: release?.translatedName || 'N/A',
+      type: 'text',
+    },
+    {
+      label: 'Status:',
+      description: 'Enter the status of release.',
+      name: 'status',
+      value: release?.status || 'N/A',
+      type: 'text',
+    },
+    {
+      label: 'Max episodes:',
+      description: 'Enter the maximum episodes of release.',
+      name: 'maxEpisodes',
+      value: release?.maxEpisodes || 'N/A',
       type: 'text',
     },
     {
